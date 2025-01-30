@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp
+  labels:
+    app: myapp
+spec:
+  containers:
+    - name: myapp
+      image: alpine:latest
+      command: ['sh', '-c', 'while true; do echo "logging $(date)" >> /opt/logs.txt; sleep 1; done']
+      volumeMounts:
+        - name: data
+          mountPath: /opt
+    - name: logshipper
+      image: alpine:latest
+      command: ['sh', '-c', 'tail -F /opt/logs.txt']
+      volumeMounts:
+        - name: data
+          mountPath: /opt
+  volumes:
+    - name: data
+      emptyDir: {}
