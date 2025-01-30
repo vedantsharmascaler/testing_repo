@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-anti-affinity-pod
+  labels:
+    app: my-app
+spec:
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchLabels:
+              app: my-app
+          topologyKey: "kubernetes.io/hostname"
+  containers:
+    - name: nginx
+      image: nginx
