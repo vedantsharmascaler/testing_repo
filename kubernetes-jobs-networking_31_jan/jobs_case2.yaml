@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: demo-job
+spec:
+  completions: 5       # Total 5 successful runs required
+  parallelism: 2       # Run 2 pods at a time
+  backoffLimit: 3      # Retry a failed pod 3 times before marking job as failed
+  activeDeadlineSeconds: 10  # Job must finish within 60 seconds
+
+  template:
+    spec:
+      containers:
+      - name: worker
+        image: busybox
+        command: ["sh", "-c", "echo Running task; sleep 10; exit 0"]
+      restartPolicy: Never

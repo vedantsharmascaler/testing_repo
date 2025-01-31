@@ -1,0 +1,100 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod-1
+  labels:
+    app: nginx
+    pod: "1" 
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - name: html
+      mountPath: /usr/share/nginx/html
+  volumes:
+  - name: html
+    configMap:
+      name: nginx-html-1
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-html-1
+data:
+  index.html: |
+    <html><body><h1>Welcome to Pod 1</h1></body></html>
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod-2
+  labels:
+    app: nginx
+    pod: "2"  
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - name: html
+      mountPath: /usr/share/nginx/html
+  volumes:
+  - name: html
+    configMap:
+      name: nginx-html-2
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-html-2
+data:
+  index.html: |
+    <html><body><h1>Welcome to Pod 2</h1></body></html>
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod-3
+  labels:
+    app: nginx
+    pod: "3"  
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - name: html
+      mountPath: /usr/share/nginx/html
+  volumes:
+  - name: html
+    configMap:
+      name: nginx-html-3
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-html-3
+data:
+  index.html: |
+    <html><body><h1>Welcome to Pod 3</h1></body></html>
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: nginx  # Selects all pods with the app label 'nginx'
+  type: NodePort  # Exposes the service externally on every node
+  ports:
+    - protocol: TCP
+      port: 80        # The service port
+      targetPort: 80  # The port on the pod where traffic is forwarded
+      nodePort: 30007 # The external port to access the service
