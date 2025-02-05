@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hostpath-demo
+spec:
+  containers:
+  - name: busybox
+    image: busybox
+    command: ["/bin/sh", "-c"]
+    args:
+      - while true; do
+          echo "$(date) - Log entry from pod" >> /var/log/app-logs/demo.log;
+          sleep 5;
+        done
+    volumeMounts:
+    - mountPath: /var/log/app-logs
+      name: host-volume
+  volumes:
+  - name: host-volume
+    hostPath:
+      path: /var/log/app-logs   # Host directory to be mounted
+      type: DirectoryOrCreate    # Creates directory if not exists

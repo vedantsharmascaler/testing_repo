@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pvc-test
+spec:
+  volumes:
+    - name: storage
+      persistentVolumeClaim:
+        claimName: pvc-retain
+  containers:
+    - name: test-container
+      image: busybox
+      command: ["sleep", "3600"]
+      volumeMounts:
+        - mountPath: "/data"
+          name: storage

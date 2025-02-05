@@ -1,0 +1,7 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: my-storage
+provisioner: rancher.io/local-path  # correct provisioner for Kind
+reclaimPolicy: Retain
+volumeBindingMode: WaitForFirstConsumer
