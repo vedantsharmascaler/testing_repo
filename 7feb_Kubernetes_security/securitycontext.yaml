@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: secure-pod
+spec:
+  securityContext:  # Applies to all containers in the pod
+    runAsUser: 1000  # Runs as non-root user
+    runAsGroup: 3000 # Group ID for security
+    fsGroup: 2000    # Ensures correct file permissions
+  containers:
+    - name: secure-container
+      image: busybox
+      securityContext:
+        allowPrivilegeEscalation: false  # Prevent privilege escalation
+        readOnlyRootFilesystem: true     # Prevents modifying root FS
+      command: ["sleep", "3600"]

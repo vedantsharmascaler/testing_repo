@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-service
+spec:
+  clusterIP: None  # This makes the service headless (no IP assignment)
+  selector:
+    app: my-db
+  ports:
+    - port: 5432
+      targetPort: 5432
