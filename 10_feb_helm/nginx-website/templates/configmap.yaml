@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-config
+data:
+  index.html: |
+    {{- if .Values.config }}
+    {{- .Values.config.indexHtml | nindent 4 }}
+    {{- else }}
+    Default index.html content
+    {{- end }}

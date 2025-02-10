@@ -1,0 +1,7 @@
+apiVersion: mygroup.example.com/v1
+kind: Fruit
+metadata:
+  name: apple
+spec:
+  color: red
+  taste: sweet
