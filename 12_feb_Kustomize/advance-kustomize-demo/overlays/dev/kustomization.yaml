@@ -1,0 +1,30 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+
+# Apply patches to modify deployment for the dev environment
+patches:
+  - path: patch-deployment.yaml
+
+# Modify the Nginx image version
+images:
+  - name: nginx
+    newTag: "1.23"
+
+# Apply common labels to all resources in the dev overlay
+commonLabels:
+  environment: dev
+  team: frontend
+
+# Generator Options to remove hash suffixes from generated resources
+generatorOptions:
+  disableNameSuffixHash: true
+
+# Generate a new ConfigMap with dev-specific content
+configMapGenerator:
+  - name: nginx-config
+    behavior: replace
+    files:
+      - index.html
