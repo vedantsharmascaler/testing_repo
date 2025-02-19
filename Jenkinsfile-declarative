@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+    stages {
+        stage('Clone Repository') {
+            steps {
+                echo 'Cloning repository...'
+                git branch: 'jenkins', url: 'https://github.com/vedantsharmascaler/testing_repo.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo 'Building application...'
+            }
+        }
+
+        stage('Syntax Error Demo') {
+            stepa {
+                echo 'Intentional syntax error'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Running tests...'
+            }
+        }
+    }
+}

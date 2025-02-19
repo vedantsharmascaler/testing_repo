@@ -1,0 +1,27 @@
+node {
+    try {
+        stage('Checkout') {
+            git url: 'https://github.com/example/repo.git'
+        }
+
+        stage('Build') {
+            sh 'mvn clean package'
+        }
+
+        stage('Test') {
+            sh 'mvn test'
+        }
+
+        stage('Deploy') {
+            if (env.BRANCH_NAME == 'main') {
+                sh './deploy.sh'
+            }
+        }
+    } catch (Exception e) {
+        echo "Pipeline failed: ${e.getMessage()}"
+        currentBuild.result = 'FAILURE'
+    } finally {
+        echo 'Cleaning up...'
+        deleteDir()  // Clean up workspace
+    }
+}

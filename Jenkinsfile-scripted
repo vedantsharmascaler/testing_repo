@@ -1,0 +1,18 @@
+node {
+    stage('Clone Repository') {
+        echo 'Cloning repository...'
+        git branch: 'jenkins', url: 'https://github.com/vedantsharmascaler/testing_repo.git'
+    }
+
+    stage('Build') {
+        echo 'Building application...'
+    }
+
+    staga('Syntax Error Demo') {
+        echo 'Intentional syntax error' 
+    }
+
+    stage('Test') {
+        echo 'Running tests...'
+    }
+}
