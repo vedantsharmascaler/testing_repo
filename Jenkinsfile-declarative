@@ -15,7 +15,7 @@ pipeline {
         }
 
         stage('Syntax Error Demo') {
-            stepa {
+            steps {
                 echo 'Intentional syntax error'
             }
         }
