@@ -1,0 +1,56 @@
+pipeline {
+    agent any
+
+    parameters {
+        extendedChoice(name: 'OPTIONS', type: 'PT_CHECKBOX', 
+            value: 'Build,Test,Deploy', defaultValue: 'Build', 
+            description: 'Select the steps to execute')
+    }
+
+    stages {
+        stage('Determine Selected Options') {
+            steps {
+                script {
+                    def selectedOptions = params.OPTIONS.tokenize(',')
+                    echo "User selected: ${selectedOptions}"
+
+                    // Store selected stages for later execution
+                    env.SELECTED_STAGES = selectedOptions.join(',')
+                }
+            }
+        }
+
+        // Dynamically create Build stage
+        stage('Build') {
+            when {
+                expression { env.SELECTED_STAGES?.contains('Build') }
+            }
+            steps {
+                echo "Executing Build..."
+                sh 'echo Build Process Started'
+            }
+        }
+
+        // Dynamically create Test stage
+        stage('Test') {
+            when {
+                expression { env.SELECTED_STAGES?.contains('Test') }
+            }
+            steps {
+                echo "Executing Tests..."
+                sh 'echo Running Tests'
+            }
+        }
+
+        // Dynamically create Deploy stage
+        stage('Deploy') {
+            when {
+                expression { env.SELECTED_STAGES?.contains('Deploy') }
+            }
+            steps {
+                echo "Executing Deployment..."
+                sh 'echo Deploying Application'
+            }
+        }
+    }
+}
