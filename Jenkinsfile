@@ -1,28 +1,14 @@
 pipeline {
     agent any
-
     stages {
-        stage('Checkout') {
+        stage('Feature Build') {
             steps {
-                git branch: 'jenkins', url: 'https://github.com/vedantsharmascaler/testing_repo.git'
+                echo "Building feature branch..."
             }
         }
-        stage('Build') {
+        stage('Feature Test') {
             steps {
-                echo "Building the application..."
-                sh 'echo Build Successful!'
-            }
-        }
-        stage('Test') {
-            steps {
-                echo "Running tests..."
-                sh 'echo All tests passed!'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo "Deploying application..."
-                sh 'echo Deployment Complete!'
+                echo "Running tests on new feature..."
             }
         }
     }
