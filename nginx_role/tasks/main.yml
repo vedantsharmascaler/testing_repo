@@ -1,0 +1,15 @@
+---
+# tasks file for nginx_role
+
+- name: Install Nginx
+  apt:
+    name: nginx
+    state: present
+
+- name: Copy Nginx Configuration File
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/sites-available/default
+
+- name: Restart Nginx
+  shell: systemctl restart nginx

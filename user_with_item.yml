@@ -1,0 +1,12 @@
+- name: Create users with `with_items`
+  hosts: dbservers
+  become: yes
+  tasks:
+    - name: Add multiple users
+      user:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - alice
+        - bob
+        - charlie

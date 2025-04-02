@@ -1,0 +1,12 @@
+- name: Create users with `loop`
+  hosts: dbservers
+  become: yes
+  tasks:
+    - name: Add multiple users
+      user:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - alice
+        - bob
+        - charlie

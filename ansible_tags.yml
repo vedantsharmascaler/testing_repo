@@ -1,0 +1,29 @@
+---
+- name: Ansible Tags Demo
+  hosts: localhost
+  become: yes
+  tasks:
+
+    - name: Install Apache
+      apt:
+        name: apache2
+        state: present
+      tags: install_apache
+
+    - name: Start Apache Service
+      service:
+        name: apache2
+        state: started
+      tags: start_service
+
+    - name: Create a sample index.html
+      copy:
+        dest: /var/www/html/index.html
+        content: "<h1>Welcome to Ansible Tags Demo</h1>"
+      tags: deploy_content
+
+    - name: Restart Apache to apply changes
+      service:
+        name: apache2
+        state: restarted
+      tags: restart_service

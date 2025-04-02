@@ -1,0 +1,12 @@
+- name: Install multiple packages using with_items
+  hosts: dbservers
+  become: yes  # Run tasks as sudo
+  tasks:
+    - name: Install required packages
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - nginx
+        - git
+        - curl
