@@ -1,0 +1,21 @@
+- name: Demonstrate Prompting for Variables in Ansible
+  hosts: localhost
+  gather_facts: no
+
+  vars_prompt:
+    - name: username
+      prompt: "Enter your username"
+      private: no  
+
+    - name: user_password
+      prompt: "Enter your password"
+      private: yes  
+
+  tasks:
+    - name: Display the entered username
+      debug:
+        msg: "The username provided is {{ username }}"
+
+    - name: Inform about password handling
+      debug:
+        msg: "Password has been received but will not be displayed for security reasons. {{ user_password }}"

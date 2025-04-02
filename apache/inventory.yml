@@ -1,0 +1,16 @@
+all:
+  children:
+    web_servers:
+      hosts:
+        web1:
+          ansible_host: 16.171.200.121
+          ansible_user: ubuntu
+          ansible_port: 22
+          server_name: web1.example.com
+          document_root: /var/www/web1
+        web2:
+          ansible_host: 16.170.208.165
+          ansible_user: ubuntu
+          ansible_port: 22
+          server_name: web2.example.com
+          document_root: /var/www/web2

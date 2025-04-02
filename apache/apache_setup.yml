@@ -1,0 +1,41 @@
+- name: Configure Apache Web Server
+  hosts: web_servers
+  become: yes
+  tasks:
+    - name: Install Apache
+      apt:
+        name: apache2
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Create the document root directory
+      file:
+        path: "{{ document_root }}"
+        state: directory
+        owner: www-data
+        group: www-data
+        mode: '0755'
+
+    - name: Deploy VirtualHost Configuration
+      template:
+        src: virtualhost.conf.j2
+        dest: "/etc/apache2/sites-available/{{ server_name }}.conf"
+
+    - name: Enable the VirtualHost
+      command: a2ensite {{ server_name }}.conf
+
+    - name: Disable the default Apache site
+      command: a2dissite 000-default.conf
+
+    - name: Deploy custom index.html file
+      copy:
+        dest: "{{ document_root }}/index.html"
+        content: "<h1>Welcome to {{ server_name }}!</h1>"
+        owner: www-data
+        group: www-data
+        mode: '0644'
+
+    - name: Restart Apache to apply changes
+      service:
+        name: apache2
+        state: restarted
