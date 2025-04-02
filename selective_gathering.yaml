@@ -1,0 +1,15 @@
+- name: Selective Fact Gathering
+  hosts: all
+  gather_facts: true
+  gather_subset:
+    - hardware
+    - network
+  tasks:
+    - name: Display Network Interfaces
+      debug:
+        var: ansible_interfaces  
+
+    - name: Display CPU Model
+      debug:
+        var: ansible_processor 
+

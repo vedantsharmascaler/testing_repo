@@ -1,0 +1,21 @@
+- name: Demonstrate Ansible Variable Precedence
+  hosts: all
+  vars:
+    playbook_var: "This is a playbook-level variable"
+
+  tasks:
+    - name: Display Inventory Variables
+      ansible.builtin.debug:
+        msg: "Inventory Variable - Host: {{ inventory_hostname }}, IP: {{ ansible_host }}"
+
+    - name: Display Group Variables
+      ansible.builtin.debug:
+        msg: "Group Variable: {{ web_group_var | default(db_group_var) }}"
+
+    - name: Display Host Variables
+      ansible.builtin.debug:
+        msg: "Host Variable: {{ custom_host_var | default('No host variable set') }}"
+
+    - name: Display Playbook Variables
+      ansible.builtin.debug:
+        msg: "Playbook Variable: {{ playbook_var }}"

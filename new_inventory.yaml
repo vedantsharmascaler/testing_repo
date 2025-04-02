@@ -1,0 +1,28 @@
+all:
+  children:
+    web_servers:
+      hosts:
+        web1:
+          ansible_host: 16.171.200.121
+          ansible_user: ubuntu
+          ansible_port: 22
+          custom_host_var: "This is a host-specific variable"
+        web2:
+          ansible_host: 16.170.208.165
+          ansible_user: ubuntu
+          ansible_port: 22
+      vars:
+        http_port: 80
+        ansible_connection: ssh
+        web_group_var: "This is a group variable for web servers"
+
+    db_servers:
+      hosts:
+        db1:
+          ansible_host: 16.171.6.131
+          ansible_user: ubuntu
+          ansible_port: 22
+      vars:
+        db_engine: mysql
+        ansible_connection: ssh
+        db_group_var: "This is a group variable for DB servers"

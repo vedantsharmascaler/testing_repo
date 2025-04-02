@@ -1,0 +1,26 @@
+- name: Demonstrate Registered, Vault, and Environment Variables
+  hosts: all
+  become: yes
+  vars_files:
+    - secrets.yml  # Vault file
+
+  tasks:
+    - name: Get system uptime
+      command: uptime
+      register: server_uptime
+
+    - name: Print the uptime
+      debug:
+        msg: "Server uptime: {{ server_uptime.stdout }}"
+
+    - name: Print Vault variable
+      debug:
+        msg: "Database Password is {{ db_password }}"
+
+    - name: Set an environment variable
+      shell: "export CUSTOM_PATH=/opt/custom/path && echo $CUSTOM_PATH"
+      register: custom_path_output
+
+    - name: Display the registered environment variable
+      debug:
+        msg: "Environment Variable CUSTOM_PATH: {{ custom_path_output.stdout }}"

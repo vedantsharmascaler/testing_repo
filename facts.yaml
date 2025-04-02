@@ -1,0 +1,31 @@
+- name: Install Nginx based on available memory
+  hosts: webservers
+  become: yes
+  tasks:
+    - name: Gather facts
+      setup:
+
+    - name: Print total available memory
+      debug:
+        msg: "Total Memory: {{ ansible_facts['memtotal_mb'] }} MB"
+
+    - name: Install regular Nginx on hosts with less than 4GB of RAM
+      apt:
+        name: nginx
+        state: present
+      when: ansible_facts['memtotal_mb'] < 4096
+
+    - name: Install optimized Nginx on hosts with 4GB or more of RAM
+      apt:
+        name: nginx-extras
+        state: present
+      when: ansible_facts['memtotal_mb'] >= 4096
+
+    - name: Confirm installed Nginx version
+      command: nginx -v
+      register: nginx_version
+      ignore_errors: yes
+
+    - name: Print installed Nginx version
+      debug:
+        msg: "Installed Nginx version: {{ nginx_version.stderr | default('Nginx not found') }}"

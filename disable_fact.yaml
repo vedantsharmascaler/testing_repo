@@ -1,0 +1,7 @@
+- name: Example without fact gathering
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Print a message
+      debug:
+        msg: "This playbook does not gather facts."
