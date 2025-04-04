@@ -1,0 +1,48 @@
+- name: Install WordPress dependencies
+  ansible.builtin.apt:
+    name:
+      - apache2
+      - php
+      - php-mysql
+      - libapache2-mod-php
+      - wget
+      - unzip
+    state: present
+  tags:
+    - wordpress
+
+- name: Download WordPress
+  ansible.builtin.get_url:
+    url: https://wordpress.org/latest.zip
+    dest: /tmp/latest.zip
+  tags:
+    - wordpress
+
+- name: Unzip WordPress
+  ansible.builtin.unarchive:
+    src: /tmp/latest.zip
+    dest: /var/www/html/
+    remote_src: yes
+    creates: /var/www/html/wordpress
+  tags:
+    - wordpress
+
+- name: Copy WordPress config
+  ansible.builtin.template:
+    src: wp-config.php.j2
+    dest: /var/www/html/wordpress/wp-config.php
+    owner: www-data
+    group: www-data
+    mode: '0644'
+  tags:
+    - configure
+  notify: Restart Apache
+
+- name: Set permissions
+  ansible.builtin.file:
+    path: /var/www/html/wordpress
+    recurse: yes
+    owner: www-data
+    group: www-data
+  tags:
+    - wordpress

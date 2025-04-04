@@ -1,0 +1,13 @@
+- name: Run task on DB host but delegate output handling to web1
+  hosts: db_servers
+  become: yes
+  tasks:
+    - name: Get disk usage on DB server
+      shell: df -h /
+      register: disk_output
+
+    - name: Write DB disk usage info to a central file on web1
+      copy:
+        dest: "/tmp/{{ inventory_hostname }}_disk.txt"
+        content: "{{ disk_output.stdout }}"
+      delegate_to: web2

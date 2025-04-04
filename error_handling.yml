@@ -1,0 +1,23 @@
+- name: Demo ignore_errors and failed_when
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Try installing a non-existent package
+      apt:
+        name: not-a-real-package
+        state: present
+      ignore_errors: yes
+
+    - name: Run a command that returns output we will evaluate
+      shell: "echo 'This is an error message from the app'"
+      register: curl_output
+
+    - name: Fail only if the output contains the word 'error'
+      debug:
+        msg: "Output: {{ curl_output.stdout }}"
+      failed_when: "'error' in curl_output.stdout"
+      ignore_errors: yes
+
+    - name: Task4
+      debug:
+        msg: "Playbook continues after handling failures"

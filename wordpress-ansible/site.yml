@@ -1,0 +1,12 @@
+- name: Setup WordPress with MySQL
+  hosts: localhost
+  become: true
+
+  roles:
+    - role: mysql
+      tags:
+        - mysql
+    - role: wordpress
+      tags:
+        - wordpress
+        - configure

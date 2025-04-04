@@ -1,0 +1,5 @@
+- name: Handler Demo using a Role
+  hosts: web1
+  become: yes
+  roles:
+    - apache_handler_demo

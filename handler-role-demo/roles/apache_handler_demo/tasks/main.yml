@@ -1,0 +1,15 @@
+- name: Install Apache Web Server
+  apt:
+    name: apache2
+    state: present
+    update_cache: yes
+  notify: Restart Apache
+
+- name: Deploy custom index.html
+  template:
+    src: index.html.j2
+    dest: /var/www/html/index.html
+    owner: www-data
+    group: www-data
+    mode: '0644'
+  notify: Restart Apache

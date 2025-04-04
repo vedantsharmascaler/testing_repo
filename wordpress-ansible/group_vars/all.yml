@@ -1,0 +1,4 @@
+db_name: wordpress
+db_user: wpuser
+db_password: secretpass
+db_host: localhost
