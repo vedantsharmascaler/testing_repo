@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        AWS_DEFAULT_REGION = "us-east-1"
+        AWS_DEFAULT_REGION = "ap-south-1"
     }
 
     stages {
@@ -15,13 +15,13 @@ pipeline {
         stage('Build Image') {
             steps {
                 script {
-                    sh 'docker build -t vedant120/react-app:v4 .'
+                    sh 'docker build -t adityalokapalli309/react-app:v4 .'
                 }
             }
         }
         stage('Docker Login') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+                withCredentials([usernamePassword(credentialsId: 'dockerhubcreds', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
                     sh 'echo "$PASS" | docker login -u "$USER" --password-stdin'
                 }
             }
@@ -29,13 +29,13 @@ pipeline {
 
         stage('Push') {
             steps {
-                sh 'docker push vedant120/react-app:v4'
+                sh 'docker push adityalokapalli309/react-app:v4'
             }
         }
 
         stage('Deploy to EKS') {
             steps {
-                sh 'kubectl config use-context arn:aws:eks:us-east-1:266735832911:cluster/jenkinsProject'
+                sh 'kubectl config use-context arn:aws:eks:ap-south-1:074004850362:cluster/Final-EKS-Scaler'
                 sh 'kubectl apply -f deployment.yaml'
                 sh 'kubectl apply -f service.yaml'
             }
