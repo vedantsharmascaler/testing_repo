@@ -35,10 +35,13 @@ pipeline {
 
         stage('Deploy to EKS') {
             steps {
-                sh 'kubectl config use-context arn:aws:eks:ap-south-1:074004850362:cluster/Final-EKS-Scaler'
-                sh 'kubectl apply -f deployment.yaml'
-                sh 'kubectl apply -f service.yaml'
-            }
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-creds']]) {
+            sh '''
+                aws eks update-kubeconfig --region ap-south-1 --name Final-EKS-Scaler
+                kubectl apply -f deployment.yaml
+                kubectl apply -f service.yaml
+            '''
+           }
         }
     }
 }
