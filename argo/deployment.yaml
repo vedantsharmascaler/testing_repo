@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: react-app # Name of the container
-        image: adityalokapalli309/react-app # Docker image for the React.js app
+        image: nginx # Docker image for the React.js app
         imagePullPolicy: Always # Ensure Kubernetes pulls the latest image from Docker Hub
         ports:
         - containerPort: 3000 # Port exposed by the container
